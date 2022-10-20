@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Hello, world!</title>
+    <style>
+        img {
+            vertical-align: middle;
+        }
+        a {
+            text-decoration: none;
+            color: black;
+        }
+        a:hover {
+            color: black;
+        }
+        .bg-img {
+            height: 90%;
+        }
+        .slide {
+            display: none;
+        }
+        .checked {
+            color: orange;
+        }
+        .float-left {
+            float: left;
+        }
+        .float-right {
+            float: right;
+        }
+        .card-size {
+            width: 500px;
+        }
+        #result {
+            background-image: url('https://byggjobs.app/typo3conf/ext/byggjobs_api/Resources/Public/Images/yellow-spot.png');
+            background-repeat: no-repeat;
+            background-position: top;
+            background-size: contain;
+            /* margin-top: 130px; */
+            padding: 70px;
+        }
+    </style>
+</head>
+
+<body class="bg-light">
+    <div class="row" id="result">
+    </div>
+    <div class="row" >
+        <div class="col-md-4">&nbsp;</div>
+        <div class="col-md-4 text-center">
+            <button class="btn btn-primary" id="more_less" onclick="more()">More</button>
+        </div>
+        <div class="col-md-4">&nbsp;</div>
+    </div>
+    <script>
+        var myIndex = 0;
+        function loadDoc() {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+                var workers = JSON.parse(this.responseText).data
+                var avatar = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
+                workers.forEach(element => {
+                    document.getElementById('result').innerHTML += `<div class="col-md-4 p-1 slide">
+                        <a href="${element.shareUrl}" target="_blank" rel="noreferrer">
+                            <div class="card card-widget bg-white">
+                                <div class="row g-0">
+                                    <div class="col-md-4 text-center mt-4">
+                                        <img src="${element.company.backgroundImage ?? avatar}"
+                                            class="img-fluid bg-img rounded" alt="user image" width="60%">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <h5 class="card-title">${element.title}</h5>
+                                            <h6 class="card-text"><small class="text-muted">${element.hourlyWage +' '+ element.currency.symbol}</small></h6>
+                                            <h6 class="card-text"><small class="text-muted">${dateConversion(element.startDate) +' - '+ dateConversion(element.endDate)}</small></h6>
+                                            <h6 class="card-text"><small class="text-muted"><span class="badge bg-secondary">${element.location.city ? element.location.city.name : ' '}</span> <span class="badge bg-secondary">${element.employmentType.title ? element.employmentType.title: ' '}</span> <span class="badge bg-secondary">${element.category.title ? element.category.title: ' '}</span></small></h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-white">
+                                    <div class="float-left">
+                                        <small class="text-muted">Posted: ${element.createdAt ? element.createdAt.split('-').reverse().join('-') : ' ' } </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>`;
+                });
+                carousel()
+            }
+            xhttp.open("GET", "https://api.byggjobb.epicss.dev/api/typo3/jobs", true);
+            xhttp.send();
+        }
+
+        var interval = setInterval(carousel, 1000)
+        function carousel () {
+            var divsToHide = document.getElementsByClassName("slide"); 
+            for(var i = 0; i < divsToHide.length; i++){
+                if (i >= myIndex && i <= myIndex + 2) {
+                    divsToHide[i].style.display = "block"; 
+                } else {
+                    divsToHide[i].style.display = "none";
+                }
+            }
+            if (myIndex >= divsToHide.length) {
+                divsToHide[0].style.display = "block";  
+                divsToHide[1].style.display = "block";  
+                divsToHide[2].style.display = "block";  
+                myIndex = 0
+            } else {
+                myIndex = myIndex + 3
+            }
+        }
+        
+        function more () {
+            clearInterval(interval)
+            document.getElementById('more_less').innerHTML = "Less"
+            var divsToHide = document.getElementsByClassName("slide"); 
+            for(var i = 0; i < divsToHide.length; i++){
+                divsToHide[i].style.display = "block"; 
+            }
+            document.getElementById('more_less').setAttribute("onclick", "less()")
+            return;
+        }
+
+        function less () {
+            var divsToHide = document.getElementsByClassName("slide"); 
+            divsToHide[0].style.display = "block";  
+            divsToHide[1].style.display = "block";  
+            divsToHide[2].style.display = "block";
+            interval = setInterval(carousel, 1000)
+            document.getElementById('more_less').innerHTML = "More"
+            document.getElementById('more_less').setAttribute("onclick", "more()")
+            return;
+        }
+
+        function dateConversion(date) {
+            const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+            return `${month[new Date(date).getMonth()]} ${date.split('-')[0]}`
+            
+        }
+
+        loadDoc()
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
