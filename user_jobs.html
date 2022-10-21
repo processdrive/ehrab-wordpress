@@ -53,23 +53,25 @@
 </head>
 
 <body class="">
-    <div class="row bg-imgage" id="result_user">
-    </div>
-    <div class="row" >
-        <div class="col-md-4">&nbsp;</div>
-        <div class="col-md-4 text-center">
-            <button class="btn btn-primary" id="more_less_user" onclick="moreUser()">More</button>
+    <div class="container">
+        <div class="row bg-imgage" id="result_user">
         </div>
-        <div class="col-md-4">&nbsp;</div>
-    </div>
-    <div class="row bg-imgage mt-4" id="result_job">
-    </div>
-    <div class="row" >
-        <div class="col-md-4">&nbsp;</div>
-        <div class="col-md-4 text-center">
-            <button class="btn btn-primary" id="more_less_job" onclick="moreJob()">More</button>
+        <div class="row" >
+            <div class="col-md-4">&nbsp;</div>
+            <div class="col-md-4 text-center">
+                <button class="btn btn-primary" id="more_less_user" onclick="moreUser()">More</button>
+            </div>
+            <div class="col-md-4">&nbsp;</div>
         </div>
-        <div class="col-md-4">&nbsp;</div>
+        <div class="row bg-imgage mt-4" id="result_job">
+        </div>
+        <div class="row" >
+            <div class="col-md-4">&nbsp;</div>
+            <div class="col-md-4 text-center">
+                <button class="btn btn-primary" id="more_less_job" onclick="moreJob()">More</button>
+            </div>
+            <div class="col-md-4">&nbsp;</div>
+        </div>
     </div>
     <script>
 
@@ -127,21 +129,15 @@
                 workers.forEach(element => {
                     document.getElementById('result_job').innerHTML += `<div class="col-md-4 p-1 slide_job">
                         <a href="${element.shareUrl}" target="_blank" rel="noreferrer">
-                            <div class="card card-widget bg-white">
-                                <div class="row g-0">
-                                    <div class="col-md-4 text-center mt-4">
-                                        <img src="${element.company.backgroundImage ?? avatar}"
-                                            class="img-fluid bg-img rounded" alt="user image" width="60%">
-                                    </div>
-                                    <div class="col-md-8">
+                            <div class="card card-widget bg-white h-100">
                                         <div class="card-body">
                                             <h5 class="card-title">${element.title}</h5>
                                             <h6 class="card-text"><small class="text-muted">${element.hourlyWage +' '+ element.currency.symbol}</small></h6>
                                             <h6 class="card-text"><small class="text-muted">${dateConversion(element.startDate) +' - '+ dateConversion(element.endDate)}</small></h6>
-                                            <h6 class="card-text"><small class="text-muted"><span class="badge bg-secondary">${element.location.city ? element.location.city.name : ' '}</span> <span class="badge bg-secondary">${element.employmentType.title ? element.employmentType.title: ' '}</span> <span class="badge bg-secondary">${element.category.title ? element.category.title: ' '}</span></small></h6>
+                                            <h6 class="card-text"><small class="text-muted"><span class="badge bg-secondary">${element.location.city ? element.location.city.name : ' '}</span>
+                                                                                            ${element.location.country ? '<span class="badge bg-secondary">'+element.location.country.name+'</span>' : ' '}
+                                                                                            <span class="badge bg-secondary">${element.employmentType.title ? element.employmentType.title: ' '}</span> <span class="badge bg-secondary">${element.category.title ? element.category.title: ' '}</span></small></h6>
                                         </div>
-                                    </div>
-                                </div>
                                 <div class="card-footer bg-white">
                                     <div class="float-left">
                                         <small class="text-muted">Posted: ${element.createdAt ? element.createdAt.split('-').reverse().join('.') : ' ' } </small>
