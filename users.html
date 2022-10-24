@@ -66,42 +66,47 @@
             const xhttp = new XMLHttpRequest();
             xhttp.onload = function () {
                 var workers = JSON.parse(this.responseText).data
-                var avatar = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
-                workers.forEach((element, index) => {
-                    document.getElementById('result_user').innerHTML += `<div class="col-md-4 p-1 slide_user" id="view">
-                    <a href="${element.shareUrl}" target="_blank" rel="noreferrer" >
-                        <div class="card card-widget bg-white h-100">
-                            <div class="row g-0">
-                                <div class="col-md-4 text-center mt-4">
-                                    <img src="${element.backgroundImage ?? avatar}"
-                                        class="img-fluid bg-img rounded" alt="user image" width="100px">
+                if(workers.length != 0) {
+                    var avatar = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
+                    workers.forEach((element, index) => {
+                        document.getElementById('result_user').innerHTML += `<div class="col-md-4 p-1 slide_user" id="view">
+                        <a href="${element.shareUrl}" target="_blank" rel="noreferrer" >
+                            <div class="card card-widget bg-white h-100">
+                                <div class="row g-0">
+                                    <div class="col-md-4 text-center mt-4">
+                                        <img src="${element.backgroundImage ?? avatar}"
+                                            class="img-fluid bg-img rounded" alt="user image" width="100px">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <h5 class="card-title">${element.name}</h5>
+                                            <h6 class="card-text"><small class="text-muted">${element.experiencesInDays ? element.experiencesInDays + ' days' : ''}</small></h6>
+                                            <h6 class="card-text"><small class="text-muted">${element.location.country ? element.location.country.name : ''} ${element.location.country && element.location.city ? ',' : ''} ${element.location.city ? element.location.city.name : ''}</small></h6>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-md-8">
-                                    <div class="card-body">
-                                        <h5 class="card-title">${element.name}</h5>
-                                        <h6 class="card-text"><small class="text-muted">${element.experiencesInDays ? element.experiencesInDays + ' days' : ''}</small></h6>
-                                        <h6 class="card-text"><small class="text-muted">${element.location.country ? element.location.country.name : ''} ${element.location.country && element.location.city ? ',' : ''} ${element.location.city ? element.location.city.name : ''}</small></h6>
+                                <div class="card-footer bg-white mt-3">
+                                    <div class="float-left">
+                                        <img src="https://byggjobs.app/typo3conf/ext/byggjobs_api/Resources/Public/Icons/verified-icon.svg" alt="verified image"> ${element.verified ? 'Verified' : 'Not verified'}
+                                    </div>
+                                    <div class="float-right">
+                                        <span class="fa fa-star checked"></span>
+                                        ${element.ratings.averageRating}
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-footer bg-white mt-3">
-                                <div class="float-left">
-                                    <img src="https://byggjobs.app/typo3conf/ext/byggjobs_api/Resources/Public/Icons/verified-icon.svg" alt="verified image"> ${element.verified ? 'Verified' : 'Not verified'}
-                                </div>
-                                <div class="float-right">
-                                    <span class="fa fa-star checked"></span>
-                                    ${element.ratings.averageRating}
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>`;
-                });
-                carouselUser()
+                        </a>
+                    </div>`;
+                    });
+                    carouselUser()
+                }
+                else {
+                    document.getElementsByClassName("bg-imgage")[0].style.visibility = "hidden";
+                }
 
             }
-            xhttp.open("GET", "https://api.byggjobb.epicss.dev/api/typo3/users", true);//Staging
-            //xhttp.open("GET", "https://services.byggjobb.app/api/typo3/users", true);//Live
+            //xhttp.open("GET", "https://api.byggjobb.epicss.dev/api/typo3/users", true);//Staging
+            xhttp.open("GET", "https://services.byggjobb.app/api/typo3/users", true);//Live
             xhttp.send();
         }
         
@@ -114,13 +119,15 @@
                     divsToHide[i].style.display = "none";
                 }
             }
-            if (myIndex_user >= divsToHide.length) {
-                divsToHide[0].style.display = "block";
-                divsToHide[1].style.display = "block";
-                divsToHide[2].style.display = "block";
-                myIndex_user = 0
-            } else {
-                myIndex_user = myIndex_user + 3
+            if(divsToHide.length != 0) {
+                if (myIndex_user >= divsToHide.length) {
+                    divsToHide[0].style.display = "block";
+                    divsToHide[1].style.display = "block";
+                    divsToHide[2].style.display = "block";
+                    myIndex_user = 0
+                } else {
+                    myIndex_user = myIndex_user + 3
+                }
             }
         }
 
