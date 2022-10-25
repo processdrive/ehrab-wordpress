@@ -27,10 +27,6 @@
             height: 80px;
         }
 
-        .slide_user {
-            display: none;
-        }
-
         .slide_job {
             display: none;
         }
@@ -59,17 +55,24 @@
             /* margin-top: 130px; */
             padding: 70px;
         }
-
         .fade_in {
             animation-name: fadein;
-            animation-duration: 4s;
+            animation-duration: 3s;
         }
 
         @keyframes fadein {
             from { opacity:0; }
             to   { opacity:1  }
         }
+        .fade_out {
+            animation-name: fade;
+            animation-duration: 3s;
+        }
 
+        @keyframes fade {
+            from { opacity:1; }
+            to   { opacity:0  }
+        }
     </style>
    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -86,8 +89,6 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
 </head>
 
 <body class="">
@@ -103,7 +104,7 @@
                     var jobs = JSON.parse(this.responseText).data
                     if (jobs.length != 0) {
                         jobs.forEach(element => {
-                            document.getElementById('result_job').innerHTML += `<div class="col-md-4 p-1 slide_job fade_in">
+                            document.getElementById('result_job').innerHTML += `<div class="col-md-4 p-1 slide_job">
                             <a href="${element.shareUrl}" target="_blank" rel="noreferrer">
                                 <div class="card card-widget bg-white h-100">
                                             <div class="card-body">
@@ -149,12 +150,12 @@
                         divsToHide[1].style.display = "block";
                         divsToHide[2].style.display = "block";
                         myIndex_job = 0
-                        $(".slide_job").fadeOut();
                     } else {
                         myIndex_job = myIndex_job + 3
                     }
+                    $(".slide_job").addClass('fade_in')
+                    $(".slide_job").removeClass('fade_out')
                 }
-                document.getElementsByClassName("bg-imgage")[0].style.visibility = "hidden";
               
             }
             function dateConversion(date) {
@@ -162,7 +163,15 @@
                 return `${month[new Date(date).getMonth()]} ${date.split('-')[0]}`
     
             }
-            setInterval(carouselJob, 10000)
+            setInterval(function(){
+                $(".slide_job").removeClass('fade_in')
+                $(".slide_job").addClass('fade_out')
+
+                setTimeout(function(){
+                    carouselJob()
+                }, 3000)  
+
+            }, 7000) 
         </script>
         </div>
     </div>
