@@ -60,12 +60,21 @@
         }
         .fade_in {
             animation-name: fadein;
-            animation-duration: 4s;
+            animation-duration: 3s;
         }
 
         @keyframes fadein {
             from { opacity:0; }
             to   { opacity:1  }
+        }
+        .fade_out {
+            animation-name: fade;
+            animation-duration: 3s;
+        }
+
+        @keyframes fade {
+            from { opacity:1; }
+            to   { opacity:0  }
         }
     </style>
     <script>
@@ -78,7 +87,7 @@
                 if(workers.length != 0) {
                     var avatar = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
                     workers.forEach((element, index) => {
-                        document.getElementById('result_user').innerHTML += `<div class="col-md-4 p-1 slide_user fade_in" id="view">
+                        document.getElementById('result_user').innerHTML += `<div class="col-md-4 p-1 slide_user">
                         <a href="${element.shareUrl}" target="_blank" rel="noreferrer" >
                             <div class="card card-widget bg-white h-100">
                                 <div class="row g-0">
@@ -121,23 +130,32 @@
         }
         
         function carouselUser() {
+            
             var divsToHide = document.getElementsByClassName("slide_user");
             for (var i = 0; i < divsToHide.length; i++) {
                 if (i >= myIndex_user && i <= myIndex_user + 2) {
-                    divsToHide[i].style.display = "block"; 
+                    divsToHide[i].style.display = "block";
+
                 } else {
                     divsToHide[i].style.display = "none";
+ 
                 }
             }
             if(divsToHide.length != 0) {
                 if (myIndex_user >= divsToHide.length) {
+                    
                     divsToHide[0].style.display = "block";
                     divsToHide[1].style.display = "block";
                     divsToHide[2].style.display = "block";
                     myIndex_user = 0
+
+                    
                 } else {
                     myIndex_user = myIndex_user + 3
+
                 }
+                $(".slide_user").addClass('fade_in')
+                $(".slide_user").removeClass('fade_out')
             }
         }
         function dateConversion(date) {
@@ -145,7 +163,16 @@
             return `${month[new Date(date).getMonth()]} ${date.split('-')[0]}`
 
         }
-        setInterval(carouselUser, 10000)    
+
+        setInterval(function(){
+            $(".slide_user").removeClass('fade_in')
+            $(".slide_user").addClass('fade_out')
+
+            setTimeout(function(){
+                carouselUser()
+            }, 3000)  
+
+        }, 7000)    
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
