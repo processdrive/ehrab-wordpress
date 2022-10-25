@@ -58,6 +58,15 @@
             /* margin-top: 130px; */
             padding: 70px;
         }
+        .fade_in {
+            animation-name: fadein;
+            animation-duration: 4s;
+        }
+
+        @keyframes fadein {
+            from { opacity:0; }
+            to   { opacity:1  }
+        }
     </style>
     <script>
         loadUser()
@@ -69,7 +78,7 @@
                 if(workers.length != 0) {
                     var avatar = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
                     workers.forEach((element, index) => {
-                        document.getElementById('result_user').innerHTML += `<div class="col-md-4 p-1 slide_user" id="view">
+                        document.getElementById('result_user').innerHTML += `<div class="col-md-4 p-1 slide_user fade_in" id="view">
                         <a href="${element.shareUrl}" target="_blank" rel="noreferrer" >
                             <div class="card card-widget bg-white h-100">
                                 <div class="row g-0">
@@ -99,14 +108,15 @@
                     </div>`;
                     });
                     carouselUser()
+
                 }
                 else {
                     document.getElementsByClassName("bg-imgage")[0].style.visibility = "hidden";
                 }
 
             }
-            //xhttp.open("GET", "https://api.byggjobb.epicss.dev/api/typo3/users", true);//Staging
-            xhttp.open("GET", "https://services.byggjobb.app/api/typo3/users", true);//Live
+            xhttp.open("GET", "https://api.byggjobb.epicss.dev/api/typo3/users", true);//Staging
+            // xhttp.open("GET", "https://services.byggjobb.app/api/typo3/users", true);//Live
             xhttp.send();
         }
         
@@ -114,7 +124,7 @@
             var divsToHide = document.getElementsByClassName("slide_user");
             for (var i = 0; i < divsToHide.length; i++) {
                 if (i >= myIndex_user && i <= myIndex_user + 2) {
-                    divsToHide[i].style.display = "block";
+                    divsToHide[i].style.display = "block"; 
                 } else {
                     divsToHide[i].style.display = "none";
                 }
@@ -130,7 +140,6 @@
                 }
             }
         }
-
         function dateConversion(date) {
             const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
             return `${month[new Date(date).getMonth()]} ${date.split('-')[0]}`
@@ -151,7 +160,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-
 </head>
 
 <body class="">
