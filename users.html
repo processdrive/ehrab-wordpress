@@ -87,7 +87,7 @@
                 if(workers.length != 0) {
                     var avatar = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
                     workers.forEach((element, index) => {
-                        document.getElementById('result_user').innerHTML += `<div class="col-md-4 p-1 slide_user">
+                        document.getElementById('result_user').innerHTML += `<div class="col-md-4 p-1 slide_user fade_in">
                         <a href="${element.shareUrl}" target="_blank" rel="noreferrer" >
                             <div class="card card-widget bg-white h-100">
                                 <div class="row g-0">
@@ -154,8 +154,7 @@
                     myIndex_user = myIndex_user + 3
 
                 }
-                $(".slide_user").addClass('fade_in')
-                $(".slide_user").removeClass('fade_out')
+                
             }
         }
         function dateConversion(date) {
@@ -169,7 +168,10 @@
             $(".slide_user").addClass('fade_out')
 
             setTimeout(function(){
+                $(".slide_user").addClass('fade_in')
+                $(".slide_user").removeClass('fade_out')
                 carouselUser()
+
             }, 3000)  
 
         }, 7000)    
