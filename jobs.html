@@ -104,7 +104,7 @@
                     var jobs = JSON.parse(this.responseText).data
                     if (jobs.length != 0) {
                         jobs.forEach(element => {
-                            document.getElementById('result_job').innerHTML += `<div class="col-md-4 p-1 slide_job">
+                            document.getElementById('result_job').innerHTML += `<div class="col-md-4 p-1 slide_job fade_in">
                             <a href="${element.shareUrl}" target="_blank" rel="noreferrer">
                                 <div class="card card-widget bg-white h-100">
                                             <div class="card-body">
@@ -153,8 +153,7 @@
                     } else {
                         myIndex_job = myIndex_job + 3
                     }
-                    $(".slide_job").addClass('fade_in')
-                    $(".slide_job").removeClass('fade_out')
+                    
                 }
               
             }
@@ -168,9 +167,10 @@
                 $(".slide_job").addClass('fade_out')
 
                 setTimeout(function(){
+                    $(".slide_job").addClass('fade_in')
+                    $(".slide_job").removeClass('fade_out')
                     carouselJob()
                 }, 3000)  
-
             }, 7000) 
         </script>
         </div>
