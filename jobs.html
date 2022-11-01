@@ -132,10 +132,11 @@
                 }
                 else {
                     document.getElementsByClassName("bg-imgage")[0].style.visibility = "hidden";
+                    document.getElementsByClassName("container")[0].style.display = "none";
                 }
             }
             xhttp.open("GET", "https://api.byggjobb.epicss.dev/api/typo3/jobs", true);//Staging
-            // xhttp.open("GET", "https://services.byggjobb.app/api/typo3/jobs", true);//Live
+            //xhttp.open("GET", "https://services.byggjobb.app/api/typo3/jobs", true);//Live
             xhttp.send();
         }
        

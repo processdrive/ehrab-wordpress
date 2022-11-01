@@ -27,6 +27,190 @@
             height: 80px;
         }
 
+        .slide_job {
+            display: none;
+        }
+
+        .checked {
+            color: orange;
+        }
+
+        .float-left {
+            float: left;
+        }
+
+        .float-right {
+            float: right;
+        }
+
+        .card-size {
+            width: 500px;
+        }
+
+        .bg-imgage {
+            background-image: url('https://byggjobs.app/typo3conf/ext/byggjobs_api/Resources/Public/Images/yellow-spot.png');
+            background-repeat: no-repeat;
+            background-position: top;
+            background-size: contain;
+            /* margin-top: 130px; */
+            padding: 70px;
+        }
+        .fade_in {
+            animation-name: fadein;
+            animation-duration: 3s;
+        }
+
+        @keyframes fadein {
+            from { opacity:0; }
+            to   { opacity:1  }
+        }
+        .fade_out {
+            animation-name: fade;
+            animation-duration: 3s;
+        }
+
+        @keyframes fade {
+            from { opacity:1; }
+            to   { opacity:0  }
+        }
+    </style>
+   
+    
+
+</head>
+
+<body class="">
+    <div class="container">
+       <div class="row bg-imgage mt-4" id="result_job">
+        
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script>
+        loadJob()
+        var myIndex_job = 0;        
+        function loadJob() {
+
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+                var jobs = JSON.parse(this.responseText).data
+                if (jobs.length != 0) {
+                    jobs.forEach(element => {
+                        document.getElementById('result_job').innerHTML += `<div class="col-md-4 p-1 slide_job fade_in">
+                        <a href="${element.shareUrl}" target="_blank" rel="noreferrer">
+                            <div class="card card-widget bg-white h-100">
+                                        <div class="card-body">
+                                            <h5 class="card-title">${element.title}</h5>
+                                            <h6 class="card-text"><small class="text-muted">${element.hourlyWage + ' ' + element.currency.symbol}</small></h6>
+                                            <h6 class="card-text"><small class="text-muted">${dateConversion(element.startDate) + ' - ' + dateConversion(element.endDate)}</small></h6>
+                                            <h6 class="card-text"><small class="text-muted"><span class="badge bg-secondary">${element.location.city ? element.location.city.name : ' '}</span>
+                                                                                            ${element.location.country ? '<span class="badge bg-secondary">' + element.location.country.name + '</span>' : ' '}
+                                                                                            <span class="badge bg-secondary">${element.employmentType.title ? element.employmentType.title : ' '}</span> <span class="badge bg-secondary">${element.category.title ? element.category.title : ' '}</span></small></h6>
+                                        </div>
+                                <div class="card-footer bg-white">
+                                    <div class="float-left">
+                                        <small class="text-muted">Posted: ${element.createdAt ? element.createdAt.split('-').reverse().join('.') : ' '} </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>`;
+                    });
+                    carouselJob()
+                }
+                else {
+                    document.getElementsByClassName("bg-imgage")[0].style.visibility = "hidden";
+                }
+            }
+            xhttp.open("GET", "https://api.byggjobb.epicss.dev/api/typo3/jobs", true);//Staging
+            //xhttp.open("GET", "https://services.byggjobb.app/api/typo3/jobs", true);//Live
+            xhttp.send();
+        }
+       
+        function carouselJob() {
+            var divsToHide = document.getElementsByClassName("slide_job");
+            for (var i = 0; i < divsToHide.length; i++) {
+                if (i >= myIndex_job && i <= myIndex_job + 2) {
+                    divsToHide[i].style.display = "block";
+                } else {
+                    divsToHide[i].style.display = "none";
+                }
+            }
+            if(divsToHide.length != 0) {
+                if (myIndex_job >= divsToHide.length) {
+                    divsToHide[0].style.display = "block";
+                    divsToHide[1].style.display = "block";
+                    divsToHide[2].style.display = "block";
+                    myIndex_job = 0
+                } else {
+                    myIndex_job = myIndex_job + 3
+                }
+                
+            }
+          
+        }
+        function dateConversion(date) {
+            const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            return `${month[new Date(date).getMonth()]} ${date.split('-')[0]}`
+
+        }
+        setInterval(function(){
+            $(".slide_job").removeClass('fade_in')
+            $(".slide_job").addClass('fade_out')
+
+            setTimeout(function(){
+                $(".slide_job").addClass('fade_in')
+                $(".slide_job").removeClass('fade_out')
+                carouselJob()
+            }, 3000)  
+        }, 10000) 
+    </script>
+    
+</body>
+</html>
+
+
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        img {
+            vertical-align: middle;
+        }
+
+        a {
+            text-decoration: none;
+            color: black;
+        }
+
+        a:hover {
+            color: black;
+        }
+
+        .bg-img {
+            height: 80px;
+        }
+
         .slide_user {
             display: none;
         }
@@ -59,133 +243,35 @@
             /* margin-top: 130px; */
             padding: 70px;
         }
+        .fade_in {
+            animation-name: fadein;
+            animation-duration: 3s;
+        }
+
+        @keyframes fadein {
+            from { opacity:0; }
+            to   { opacity:1;  }
+        }
+        .fade_out {
+            animation-name: fade;
+            animation-duration: 3s;
+        }
+
+        @keyframes fade {
+            from { opacity:1; }
+            to   { opacity:0;  }
+        }
     </style>
-    <script>
-        loadUser()
-        loadJob()
-        var myIndex_user = 0;
-        var myIndex_job = 0;
-        function loadUser() {
-            const xhttp = new XMLHttpRequest();
-            xhttp.onload = function () {
-                var workers = JSON.parse(this.responseText).data
-                var avatar = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
-                workers.forEach((element, index) => {
-                    document.getElementById('result_user').innerHTML += `<div class="col-md-4 p-1 slide_user" id="view">
-                    <a href="${element.shareUrl}" target="_blank" rel="noreferrer" >
-                        <div class="card card-widget bg-white h-100">
-                            <div class="row g-0">
-                                <div class="col-md-4 text-center mt-4">
-                                    <img src="${element.backgroundImage ?? avatar}"
-                                        class="img-fluid bg-img rounded" alt="user image" width="100px">
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="card-body">
-                                        <h5 class="card-title">${element.name}</h5>
-                                        <h6 class="card-text"><small class="text-muted">${element.experiencesInDays ? element.experiencesInDays + ' days' : ''}</small></h6>
-                                        <h6 class="card-text"><small class="text-muted">${element.location.country ? element.location.country.name : ''} ${element.location.country && element.location.city ? ',' : ''} ${element.location.city ? element.location.city.name : ''}</small></h6>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-footer bg-white mt-3">
-                                <div class="float-left">
-                                    <img src="https://byggjobs.app/typo3conf/ext/byggjobs_api/Resources/Public/Icons/verified-icon.svg" alt="verified image"> ${element.verified ? 'Verified' : 'Not verified'}
-                                </div>
-                                <div class="float-right">
-                                    <span class="fa fa-star checked"></span>
-                                    ${element.ratings.averageRating}
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>`;
-                });
-                carouselUser()
+</head>
 
-            }
-            xhttp.open("GET", "https://api.byggjobb.epicss.dev/api/typo3/users", true);
-            xhttp.send();
-        }
-        function loadJob() {
-            const xhttp = new XMLHttpRequest();
-            xhttp.onload = function () {
-                var workers = JSON.parse(this.responseText).data
-                var avatar = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
-                workers.forEach(element => {
-                    document.getElementById('result_job').innerHTML += `<div class="col-md-4 p-1 slide_job">
-                    <a href="${element.shareUrl}" target="_blank" rel="noreferrer">
-                        <div class="card card-widget bg-white h-100">
-                                    <div class="card-body">
-                                        <h5 class="card-title">${element.title}</h5>
-                                        <h6 class="card-text"><small class="text-muted">${element.hourlyWage + ' ' + element.currency.symbol}</small></h6>
-                                        <h6 class="card-text"><small class="text-muted">${dateConversion(element.startDate) + ' - ' + dateConversion(element.endDate)}</small></h6>
-                                        <h6 class="card-text"><small class="text-muted"><span class="badge bg-secondary">${element.location.city ? element.location.city.name : ' '}</span>
-                                                                                        ${element.location.country ? '<span class="badge bg-secondary">' + element.location.country.name + '</span>' : ' '}
-                                                                                        <span class="badge bg-secondary">${element.employmentType.title ? element.employmentType.title : ' '}</span> <span class="badge bg-secondary">${element.category.title ? element.category.title : ' '}</span></small></h6>
-                                    </div>
-                            <div class="card-footer bg-white">
-                                <div class="float-left">
-                                    <small class="text-muted">Posted: ${element.createdAt ? element.createdAt.split('-').reverse().join('.') : ' '} </small>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>`;
-                });
-                carouselJob()
-            }
-            xhttp.open("GET", "https://api.byggjobb.epicss.dev/api/typo3/jobs", true);
-            xhttp.send();
-        }
-        function carouselUser() {
-            var divsToHide = document.getElementsByClassName("slide_user");
-            for (var i = 0; i < divsToHide.length; i++) {
-                if (i >= myIndex_user && i <= myIndex_user + 2) {
-                    divsToHide[i].style.display = "block";
-                } else {
-                    divsToHide[i].style.display = "none";
-                }
-            }
-            if (myIndex_user >= divsToHide.length) {
-                divsToHide[0].style.display = "block";
-                divsToHide[1].style.display = "block";
-                divsToHide[2].style.display = "block";
-                myIndex_user = 0
-            } else {
-                myIndex_user = myIndex_user + 3
-            }
-        }
-
-        function carouselJob() {
-            var divsToHide = document.getElementsByClassName("slide_job");
-            for (var i = 0; i < divsToHide.length; i++) {
-                if (i >= myIndex_job && i <= myIndex_job + 2) {
-                    divsToHide[i].style.display = "block";
-                } else {
-                    divsToHide[i].style.display = "none";
-                }
-            }
-            if (myIndex_job >= divsToHide.length) {
-                divsToHide[0].style.display = "block";
-                divsToHide[1].style.display = "block";
-                divsToHide[2].style.display = "block";
-                myIndex_job = 0
-            } else {
-                myIndex_job = myIndex_job + 3
-            }
-        }
-        function dateConversion(date) {
-            const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-            return `${month[new Date(date).getMonth()]} ${date.split('-')[0]}`
-
-        }
-        setInterval(carouselUser, 10000)
-        setInterval(carouselJob, 10000)
-    </script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<body class="">
+    <div class="container">
+        <div class="row bg-imgage" id="result_user">
+        </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
@@ -193,20 +279,106 @@
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+    <script>
+        loadUser()
+        var myIndex_user = 0;
+        function loadUser() {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+                var workers = JSON.parse(this.responseText).data
+                if(workers.length != 0) {
+                    var avatar = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
+                    workers.forEach((element, index) => {
+                        document.getElementById('result_user').innerHTML += `<div class="col-md-4 p-1 slide_user">
+                        <a href="${element.shareUrl}" target="_blank" rel="noreferrer" >
+                            <div class="card card-widget bg-white h-100">
+                                <div class="row g-0">
+                                    <div class="col-md-4 text-center mt-4">
+                                        <img src="${element.backgroundImage ?? avatar}"
+                                            class="img-fluid bg-img rounded" alt="user image" width="100px">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <h5 class="card-title">${element.name}</h5>
+                                            <h6 class="card-text"><small class="text-muted">${element.experiencesInDays ? element.experiencesInDays + ' days' : ''}</small></h6>
+                                            <h6 class="card-text"><small class="text-muted">${element.location.country ? element.location.country.name : ''} ${element.location.country && element.location.city ? ',' : ''} ${element.location.city ? element.location.city.name : ''}</small></h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-white mt-3">
+                                    <div class="float-left">
+                                        <img src="https://byggjobs.app/typo3conf/ext/byggjobs_api/Resources/Public/Icons/verified-icon.svg" alt="verified image"> ${element.verified ? 'Verified' : 'Not verified'}
+                                    </div>
+                                    <div class="float-right">
+                                        <span class="fa fa-star checked"></span>
+                                        ${element.ratings.averageRating}
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>`;
+                    });
+                    carouselUser()
 
-</head>
+                }
+                else {
+                    document.getElementsByClassName("bg-imgage")[0].style.visibility = "hidden";
+                }
 
-<body class="">
-    <div class="container">
-        <div class="row bg-imgage" id="result_user">
-        </div>
+            }
+            xhttp.open("GET", "https://api.byggjobb.epicss.dev/api/typo3/users", true);//Staging
+            //xhttp.open("GET", "https://services.byggjobb.app/api/typo3/users", true);//Live
+            xhttp.send();
+        }
+        
+        function carouselUser() {
+            var divsToHide = document.getElementsByClassName("slide_user");
+            for (var i = 0; i < divsToHide.length; i++) {
+                if (i >= myIndex_user && i <= myIndex_user + 2) {
+                    divsToHide[i].classList.remove("fade_out")
+                    divsToHide[i].classList.add('fade_in')
+                    divsToHide[i].style.display = "block";
+                } else {
+                   
+                    divsToHide[i].style.display = "none";
+ 
+                }
+            }
+            if(divsToHide.length != 0) {
+                if (myIndex_user >= divsToHide.length) {
+                    divsToHide[0].classList.remove("fade_out")
+                    divsToHide[0].classList.add('fade_in')
+                    divsToHide[0].style.display = "block";
 
-        <div class="row bg-imgage mt-4" id="result_job">
-        </div>
-    </div>
+                    divsToHide[1].classList.remove("fade_out")
+                    divsToHide[1].classList.add('fade_in')
+                    divsToHide[1].style.display = "block";
+                    
+                    divsToHide[2].classList.remove("fade_out")
+                    divsToHide[2].classList.add('fade_in')
+                    divsToHide[2].style.display = "block";
+                    myIndex_user = 0
 
+                    
+                } else {
+                    myIndex_user = myIndex_user + 3
+
+                }
+            }
+        }
+
+        setInterval(function(){
+            $(".slide_user").removeClass('fade_in')
+            $(".slide_user").addClass('fade_out')
+            
+            setTimeout(() => {
+                carouselUser()
+            }, 3000)
+        }, 10000)    
+    </script>
+    
 </body>
 
 </html>
