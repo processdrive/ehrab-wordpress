@@ -58,6 +58,10 @@
             padding: 18px 18px 13px;
             margin-bottom: 10px;
             position: relative;
+            padding: 1px;
+        }
+        .card-body {
+            padding: 10px 10px 0px 10px;
         }
 
         .bg-imgage {
@@ -118,7 +122,6 @@
             <div class="row" id="result_job"></div>
             <div class="row" id="result_user"></div>
         </div>
-
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
@@ -235,7 +238,7 @@
                                 <div class="row g-0">
                                     <div class="col-md-4 text-center mt-4">
                                         <img src="${element.file ? element.file.url : (element.backgroundImage ? element.backgroundImage : avatar)}"
-                                            class="img-fluid bg-img rounded" alt="user image" width="100px">
+                                            class="img-fluid bg-img rounded" alt="user image" width="60" height="75">
                                     </div>
                                     <div class="col-md-8">
                                         <div class="card-body">
