@@ -30,9 +30,11 @@
         .slide_job {
             display: none;
         }
+
         .slide_user {
             display: none;
         }
+
         .checked {
             color: orange;
         }
@@ -48,9 +50,11 @@
         .card-size {
             width: 500px;
         }
+
         .card {
             color: black;
         }
+
         .bg-imgage {
             background-image: url('https://byggjobs.app/typo3conf/ext/byggjobs_api/Resources/Public/Images/yellow-spot.png');
             background-repeat: no-repeat;
@@ -59,6 +63,7 @@
             /* margin-top: 130px; */
             padding: 70px;
         }
+
         .fade_in {
             animation-name: fadein;
             animation-duration: 3s;
@@ -73,31 +78,42 @@
         }
 
         @keyframes fadein {
-            from { opacity:0; }
-            to   { opacity:1  }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1
+            }
         }
+
         .fade_out {
             animation-name: fade;
             animation-duration: 3s;
         }
 
         @keyframes fade {
-            from { opacity:1; }
-            to   { opacity:0  }
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0
+            }
         }
     </style>
-   
-    
+
+
 
 </head>
 
 <body class="">
     <div class="container">
-       <div class="bg-imgage mt-4">
+        <div class="bg-imgage mt-4">
             <div class="row" id="result_job"></div>
             <div class="row" id="result_user"></div>
         </div>
-        
+
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
@@ -115,7 +131,7 @@
     <script>
         loadJob()
         loadUser()
-        var myIndex_job = 0;   
+        var myIndex_job = 0;
         var run = 0
         function loadJob() {
 
@@ -148,7 +164,7 @@
                         <a href="#" class="btn text-white bg-dark rounded-pill display-none" onclick="seeMore('job')" id="see_job">See More</href>
                         <a href="#" class="btn text-white bg-dark rounded-pill display-none" onclick="lessMore('job')" id="less_job">Less More</href>
                         </div>`
-                        $('#see_job').removeClass('display-none')
+                    $('#see_job').removeClass('display-none')
                     carouselJob()
                 }
                 else {
@@ -159,7 +175,7 @@
             // xhttp.open("GET", "https://services.byggjobb.app/api/typo3/jobs", true);//Live
             xhttp.send();
         }
-       
+
         function carouselJob() {
             var divsToHide = document.getElementsByClassName("slide_job");
             for (var i = 0; i < divsToHide.length; i++) {
@@ -169,18 +185,18 @@
                     divsToHide[i].style.display = "none";
                 }
             }
-            if(divsToHide.length != 0) {
+            if (divsToHide.length != 0) {
                 if (myIndex_job >= divsToHide.length) {
                     divsToHide[0].style.display = "block";
-                    divsToHide[1].style.display = "block";
-                    divsToHide[2].style.display = "block";
+                    divsToHide[1] ? divsToHide[1].style.display = "block" : '';
+                    divsToHide[2] ? divsToHide[2].style.display = "block" : '';
                     myIndex_job = 0
                 } else {
                     myIndex_job = myIndex_job + 3
                 }
-                
+
             }
-          
+
         }
         function dateConversion(date) {
             const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -202,18 +218,19 @@
         //User Script
         var myIndex_user = 0;
         function loadUser() {
-            const xhttp = new XMLHttpRequest();
-            xhttp.onload = function () {
-                var workers = JSON.parse(this.responseText).data
-                if(workers.length != 0) {
-                    var avatar = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
-                    workers.forEach((element, index) => {
-                        document.getElementById('result_user').innerHTML += `<div class="col-12 p-1 slide_user">
+            try {
+                const xhttp = new XMLHttpRequest();
+                xhttp.onload = function () {
+                    var workers = JSON.parse(this.responseText).data
+                    if (workers.length != 0) {
+                        var avatar = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
+                        workers.forEach((element, index) => {
+                            document.getElementById('result_user').innerHTML += `<div class="col-12 p-1 slide_user">
                         <a href="${element.shareUrl}" target="_blank" rel="noreferrer" >
                             <div class="card card-widget bg-white h-100">
                                 <div class="row g-0">
                                     <div class="col-md-4 text-center mt-4">
-                                        <img src="${element.backgroundImage ?? avatar}"
+                                        <img src="${element.file ? element.file.url : (element.backgroundImage ? element.backgroundImage : avatar)}"
                                             class="img-fluid bg-img rounded" alt="user image" width="100px">
                                     </div>
                                     <div class="col-md-8">
@@ -236,76 +253,85 @@
                             </div>
                         </a>
                     </div>`;
-                    });
-                    document.getElementById('result_user').innerHTML += `<div class="d-flex justify-content-center" id="user_seemore">
+                        });
+                        document.getElementById('result_user').innerHTML += `<div class="d-flex justify-content-center" id="user_seemore">
                         <a href="#" class="btn text-white bg-dark rounded-pill display-none" onclick="seeMore('user')" id="see_user">See More</href>
                         <a href="#" class="btn text-white bg-dark rounded-pill display-none" onclick="lessMore('user')" id="less_user">Less More</href>
                             </div>`
-                    // carouselUser()
+                        // carouselUser()
+
+                    }
+                    else {
+                        document.getElementsByClassName("bg-imgage")[0].style.visibility = "hidden";
+                    }
 
                 }
-                else {
-                    document.getElementsByClassName("bg-imgage")[0].style.visibility = "hidden";
-                }
+                // xhttp.open("GET", "https://api.byggjobb.epicss.dev/api/typo3/users", true);//Staging
+                xhttp.open("GET", "https://services.byggjobb.app/api/typo3/users", true);//Live
+                xhttp.send();
+            } catch (error) {
 
             }
-            xhttp.open("GET", "https://api.byggjobb.epicss.dev/api/typo3/users", true);//Staging
-            // xhttp.open("GET", "https://services.byggjobb.app/api/typo3/users", true);//Live
-            xhttp.send();
         }
-        
+
         function carouselUser() {
-            var divsToHide = document.getElementsByClassName("slide_user");
-            for (var i = 0; i < divsToHide.length; i++) {
-                if (i >= myIndex_user && i <= myIndex_user + 2) {
-                    divsToHide[i].classList.remove("fade_out")
-                    divsToHide[i].classList.add('fade_in')
-                    divsToHide[i].style.display = "block";
-                } else {
-                   
-                    divsToHide[i].style.display = "none";
- 
+            try {
+                var divsToHide = document.getElementsByClassName("slide_user");
+                for (var i = 0; i < divsToHide.length; i++) {
+                    if (i >= myIndex_user && i <= myIndex_user + 2) {
+                        divsToHide[i].classList.remove("fade_out")
+                        divsToHide[i].classList.add('fade_in')
+                        divsToHide[i].style.display = "block";
+                    } else {
+
+                        divsToHide[i].style.display = "none";
+
+                    }
                 }
-            }
-            if(divsToHide.length != 0) {
-                if (myIndex_user >= divsToHide.length) {
-                    divsToHide[0].classList.remove("fade_out")
-                    divsToHide[0].classList.add('fade_in')
-                    divsToHide[0].style.display = "block";
+                if (divsToHide.length != 0) {
+                    if (myIndex_user >= divsToHide.length) {
+                        divsToHide[0].classList.remove("fade_out")
+                        divsToHide[0].classList.add('fade_in')
+                        divsToHide[0].style.display = "block";
 
-                    divsToHide[1].classList.remove("fade_out")
-                    divsToHide[1].classList.add('fade_in')
-                    divsToHide[1].style.display = "block";
-                    
-                    divsToHide[2].classList.remove("fade_out")
-                    divsToHide[2].classList.add('fade_in')
-                    divsToHide[2].style.display = "block";
-                    myIndex_user = 0
+                        if (divsToHide[1]) {
+                            divsToHide[1].classList.remove("fade_out")
+                            divsToHide[1].classList.add('fade_in')
+                            divsToHide[1].style.display = "block";
+                        }
 
-                    
-                } else {
-                    myIndex_user = myIndex_user + 3
+                        divsToHide[2].classList.remove("fade_out")
+                        divsToHide[2].classList.add('fade_in')
+                        divsToHide[2].style.display = "block";
+                        myIndex_user = 0
 
+
+                    } else {
+                        myIndex_user = myIndex_user + 3
+
+                    }
                 }
+            } catch (error) {
+
             }
         }
 
         // setInterval(function(){
         //     $(".slide_user").removeClass('fade_in')
         //     $(".slide_user").addClass('fade_out')
-            
+
         //     setTimeout(() => {
         //         carouselUser()
         //     }, 3000)
         // }, 10000)
 
-        
+
         var isPause = true
         setInterval(() => {
             if (isPause) {
                 $('#see_job, #see_user').removeClass('display-none')
 
-                if(run % 2 == 0) {
+                if (run % 2 == 0) {
                     $(".slide_user").removeClass('fade_in')
                     $(".slide_user").addClass('fade_out')
                     $("#result_user ,#user_seemore").hide()
@@ -318,7 +344,7 @@
                     $(".slide_job").addClass('fade_out')
                     $("#result_job ,#job_seemore").hide()
                     $("#result_user ,#user_seemore").show()
-                    setTimeout(function(){
+                    setTimeout(function () {
                         $(".slide_job").addClass('fade_in')
                         $(".slide_job").removeClass('fade_out')
                         carouselJob()
@@ -326,14 +352,13 @@
                 }
                 run++
             }
-        }, 5000) 
-        const interval = setInterval(loop, 5000)
+        }, 5000)
 
-        function seeMore (action) {
+        function seeMore(action) {
             if (action == "job") {
-                location.href  = "https://byggjobs.app/active-jobs"
+                location.href = "https://byggjobs.app/active-jobs"
             } else {
-                location.href  = "https://byggjobs.app/active-workers"
+                location.href = "https://byggjobs.app/active-workers"
             }
             // isPause = false
             // var divsToHide = document.getElementsByClassName("slide_"+action);
@@ -344,18 +369,17 @@
             // $('#less_'+action).removeClass('display-none')
         }
 
-        function lessMore (action) {
+        function lessMore(action) {
             isPause = true
-            var divsToHide = document.getElementsByClassName("slide_"+action);
+            var divsToHide = document.getElementsByClassName("slide_" + action);
             for (var i = 0; i < divsToHide.length; i++) {
                 divsToHide[i].style.display = "none";
             }
-            $('#less_'+action).addClass('display-none')
-            $('#see_'+action).removeClass('display-none')
+            $('#less_' + action).addClass('display-none')
+            $('#see_' + action).removeClass('display-none')
         }
     </script>
-    
+
 </body>
+
 </html>
-
-
