@@ -48,7 +48,9 @@
         .card-size {
             width: 500px;
         }
-
+        .card {
+            color: black;
+        }
         .bg-imgage {
             background-image: url('https://byggjobs.app/typo3conf/ext/byggjobs_api/Resources/Public/Images/yellow-spot.png');
             background-repeat: no-repeat;
@@ -328,13 +330,18 @@
         const interval = setInterval(loop, 5000)
 
         function seeMore (action) {
-            isPause = false
-            var divsToHide = document.getElementsByClassName("slide_"+action);
-            for (var i = 0; i < divsToHide.length; i++) {
-                divsToHide[i].style.display = "block";
+            if (action == "job") {
+                location.href  = "https://byggjobs.app/active-jobs"
+            } else {
+                location.href  = "https://byggjobs.app/active-workers"
             }
-            $('#see_'+action).addClass('display-none')
-            $('#less_'+action).removeClass('display-none')
+            // isPause = false
+            // var divsToHide = document.getElementsByClassName("slide_"+action);
+            // for (var i = 0; i < divsToHide.length; i++) {
+            //     divsToHide[i].style.display = "block";
+            // }
+            // $('#see_'+action).addClass('display-none')
+            // $('#less_'+action).removeClass('display-none')
         }
 
         function lessMore (action) {
