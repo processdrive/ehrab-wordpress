@@ -60,6 +60,7 @@
             position: relative;
             padding: 1px;
         }
+
         .card-body {
             padding: 10px 10px 0px 10px;
         }
@@ -110,17 +111,107 @@
                 opacity: 0
             }
         }
+
+        .info-wrapper {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 18px 18px 13px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .info-wrapper .top {
+            padding: 0 0 8px;
+        }
+
+        .info-wrapper .top .left {
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .info-wrapper .top .left img {
+            border-radius: 9px;
+        }
+
+        .info-wrapper .top .right {
+            display: inline-block;
+            margin-left: 10px;
+            padding-right: 40px;
+            max-width: calc(100% - 80px);
+        }
+
+        .info-wrapper .name-title {
+            font-family: "Open-Sans-SemiBold", sans-serif;
+            font-size: 18px;
+            line-height: 19px;
+            margin-bottom: 9px;
+        }
+
+        .info-wrapper .position-experience {
+            margin-bottom: 10px;
+        }
+
+        .info-wrapper .location {
+            font-family: "Open-Sans-SemiBold", sans-serif;
+            font-size: 14px;
+            line-height: 16px;
+            color: #808080;
+        }
+
+        .info-wrapper .position-experience span {
+            font-family: "Open-Sans-SemiBold", sans-serif;
+            font-size: 14px;
+            line-height: 16px;
+            color: #808080;
+            padding-left: 8px;
+            margin-left: 3px;
+            position: relative;
+        }
+
+        .info-wrapper .bottom {
+            padding: 10px 0 0;
+            border-top: 1px solid rgba(151, 151, 151, 0.2);
+        }
+
+        .info-wrapper .bottom .left {
+            width: 49%;
+            display: inline-block;
+        }
+
+        .info-wrapper .verified div {
+            display: inline-block;
+            vertical-align: middle;
+            font-size: 16px;
+            opacity: 0.5;
+            color: #000000;
+        }
+
+        .info-wrapper .bottom .right {
+            display: inline-block;
+            text-align: right;
+            width: 50%;
+        }
+
+        .info-wrapper .rating div {
+            font-family: "Open-Sans-SemiBold", sans-serif;
+            display: inline-block;
+            vertical-align: middle;
+            font-size: 16px;
+            color: #000000;
+        }
     </style>
-
-
-
 </head>
 
 <body class="">
     <div class="container">
-        <div class="bg-imgage mt-4">
-            <div class="row" id="result_job"></div>
-            <div class="row" id="result_user"></div>
+        <div class="row">
+            <div class="col-6">
+
+            </div>
+            <div class="bg-imgage mt-4 col-6">
+                <div class="row" id="result_job"></div>
+                <div class="row" id="result_user"></div>
+            </div>
         </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -178,8 +269,8 @@
                     document.getElementsByClassName("bg-imgage")[0].style.visibility = "hidden";
                 }
             }
-            xhttp.open("GET", "https://api.byggjobb.epicss.dev/api/typo3/jobs", true);//Staging
-            // xhttp.open("GET", "https://services.byggjobb.app/api/typo3/jobs", true);//Live
+            // xhttp.open("GET", "https://api.byggjobb.epicss.dev/api/typo3/jobs", true);//Staging
+            xhttp.open("GET", "https://services.byggjobb.app/api/typo3/jobs", true);//Live
             xhttp.send();
         }
 
@@ -224,6 +315,62 @@
 
         //User Script
         var myIndex_user = 0;
+        // function loadUser() {
+        //     try {
+        //         const xhttp = new XMLHttpRequest();
+        //         xhttp.onload = function () {
+        //             var workers = JSON.parse(this.responseText).data
+        //             if (workers.length != 0) {
+        //                 var avatar = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
+        //                 workers.forEach((element, index) => {
+        //                     document.getElementById('result_user').innerHTML += `<div class="col-12 p-1 slide_user">
+        //                 <a href="${element.shareUrl}" target="_blank" rel="noreferrer" >
+        //                     <div class="card card-widget bg-white h-100">
+        //                         <div class="row g-0">
+        //                             <div class="col-md-4 text-center mt-4">
+        //                                 <img src="${element.file ? element.file.url : (element.backgroundImage ? element.backgroundImage : avatar)}"
+        //                                     class="img-fluid bg-img rounded" alt="user image" width="60" height="75">
+        //                             </div>
+        //                             <div class="col-md-8">
+        //                                 <div class="card-body">
+        //                                     <h5 class="card-title">${element.name}</h5>
+        //                                     <h6 class="card-text"><small class="text-muted">${element.experiencesInDays ? getFormatedStringFromDays(element.experiencesInDays) : ''}</small></h6>
+        //                                     <h6 class="card-text"><small class="text-muted">${element.location.country ? element.location.country.name : ''} ${element.location.country && element.location.city ? ',' : ''} ${element.location.city ? element.location.city.name : ''}</small></h6>
+        //                                 </div>
+        //                             </div>
+        //                         </div>
+        //                         <div class="card-footer bg-white mt-3">
+        //                             <div class="float-left">
+        //                                 <img src="https://byggjobs.app/typo3conf/ext/byggjobs_api/Resources/Public/Icons/verified-icon.svg" alt="verified image"> ${element.verified ? 'Verified' : 'Not verified'}
+        //                             </div>
+        //                             <div class="float-right">
+        //                                 <span class="fa fa-star checked"></span>
+        //                                 ${element.ratings.averageRating}
+        //                             </div>
+        //                         </div>
+        //                     </div>
+        //                 </a>
+        //             </div>`;
+        //                 });
+        //                 document.getElementById('result_user').innerHTML += `<div class="d-flex justify-content-center" id="user_seemore">
+        //                 <a href="#" class="btn text-white bg-dark rounded-pill display-none" onclick="seeMore('user')" id="see_user">See More</href>
+        //                     </div>`
+        //                 // carouselUser()
+
+        //             }
+        //             else {
+        //                 document.getElementsByClassName("bg-imgage")[0].style.visibility = "hidden";
+        //             }
+
+        //         }
+        //         // xhttp.open("GET", "https://api.byggjobb.epicss.dev/api/typo3/users", true);//Staging
+        //         xhttp.open("GET", "https://services.byggjobb.app/api/typo3/users", true);//Live
+        //         xhttp.send();
+        //     } catch (error) {
+
+        //     }
+        // }
+
         function loadUser() {
             try {
                 const xhttp = new XMLHttpRequest();
@@ -232,34 +379,42 @@
                     if (workers.length != 0) {
                         var avatar = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
                         workers.forEach((element, index) => {
-                            document.getElementById('result_user').innerHTML += `<div class="col-12 p-1 slide_user">
-                        <a href="${element.shareUrl}" target="_blank" rel="noreferrer" >
-                            <div class="card card-widget bg-white h-100">
-                                <div class="row g-0">
-                                    <div class="col-md-4 text-center mt-4">
-                                        <img src="${element.file ? element.file.url : (element.backgroundImage ? element.backgroundImage : avatar)}"
-                                            class="img-fluid bg-img rounded" alt="user image" width="60" height="75">
+                            document.getElementById('result_user').innerHTML += `<a href="${element.shareUrl}" class="slide_user" target="_blank" rel="noreferrer">
+                                <div class="info-wrapper">
+                                    <div class="top">
+                                        <div class="left">
+                                                    <img class="worker-image" src="${element.file ? element.file.url : (element.backgroundImage ? element.backgroundImage : avatar)}" width="60c" height="75c">
+                                        </div>
+                                        <div class="right">
+                                            <div class="name-title">
+                                                ${element.name}
+                                            </div>
+                                            <div class="position-experience">
+                                                <span>${element.experiencesInDays ? getFormatedStringFromDays(element.experiencesInDays) : ''}</span>
+                                            </div>
+                                            <div class="location">
+                                                ${element.location.country ? element.location.country.name : ''} ${element.location.country && element.location.city ? ',' : ''} ${element.location.city ? element.location.city.name : ''}
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <h5 class="card-title">${element.name}</h5>
-                                            <h6 class="card-text"><small class="text-muted">${element.experiencesInDays ? getFormatedStringFromDays(element.experiencesInDays) : ''}</small></h6>
-                                            <h6 class="card-text"><small class="text-muted">${element.location.country ? element.location.country.name : ''} ${element.location.country && element.location.city ? ',' : ''} ${element.location.city ? element.location.city.name : ''}</small></h6>
+                                    <div class="bottom">
+                                        <div class="left">
+                                            <div class="verified">
+                                                    <span><img class="verified-icon" src="https://byggjobs.app/typo3conf/ext/byggjobs_api/Resources/Public/Icons/verified-icon.svg" alt=""></span>
+                                                    <div>
+                                                        Verified
+                                                    </div>
+                                            </div>
+                                        </div>
+                                        <div class="right">
+                                            <div class="rating">
+                                                <span><img class="rating-icon" src="https://byggjobs.app/typo3conf/ext/byggjobs_api/Resources/Public/Icons/star-icon.svg" alt=""></span>
+                                                <div>${element.ratings.averageRating}</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="card-footer bg-white mt-3">
-                                    <div class="float-left">
-                                        <img src="https://byggjobs.app/typo3conf/ext/byggjobs_api/Resources/Public/Icons/verified-icon.svg" alt="verified image"> ${element.verified ? 'Verified' : 'Not verified'}
-                                    </div>
-                                    <div class="float-right">
-                                        <span class="fa fa-star checked"></span>
-                                        ${element.ratings.averageRating}
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>`;
+                            </a>`;
                         });
                         document.getElementById('result_user').innerHTML += `<div class="d-flex justify-content-center" id="user_seemore">
                         <a href="#" class="btn text-white bg-dark rounded-pill display-none" onclick="seeMore('user')" id="see_user">See More</href>
@@ -279,6 +434,7 @@
 
             }
         }
+
 
         function carouselUser() {
             try {
@@ -372,9 +528,9 @@
             var months = Math.floor(numberOfDays % 365 / 30);
             var days = Math.floor(numberOfDays % 365 % 30);
             if (numberOfDays >= 365) {
-                return '|'+years+'+ yr' 
+                return '|' + years + '+ yr'
             } else if (numberOfDays < 365 && numberOfDays <= 30) {
-                return '|'+months+' months' 
+                return '|' + months + ' months'
             }
         }
     </script>
