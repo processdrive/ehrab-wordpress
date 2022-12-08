@@ -197,6 +197,13 @@
             font-size: 16px;
             color: #000000;
         }
+        .bold { 
+            font-family: "Open-Sans-SemiBold", sans-serif;
+            font-size: 18px;
+            line-height: 19px;
+            margin-bottom: 9px;
+            color: #000000 !important;
+        }
     </style>
 </head>
 
@@ -521,9 +528,9 @@
             var months = Math.floor(numberOfDays % 365 / 30);
             var days = Math.floor(numberOfDays % 365 % 30);
             if (numberOfDays >= 365) {
-                return '| ' + years + '+ yr'
+                return '<span class="bold">|</span> ' + years + '+ yr'
             } else if (numberOfDays < 365 && numberOfDays <= 30) {
-                return '| ' + months + ' months'
+                return '<span class="bold">|</span> ' + months + ' months'
             }
         }
     </script>
