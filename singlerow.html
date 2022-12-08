@@ -163,8 +163,6 @@
             font-size: 14px;
             line-height: 16px;
             color: #808080;
-            padding-left: 8px;
-            margin-left: 3px;
             position: relative;
         }
 
@@ -204,14 +202,9 @@
 
 <body class="">
     <div class="container">
-        <div class="row">
-            <div class="col-6">
-
-            </div>
-            <div class="bg-imgage mt-4 col-6">
-                <div class="row" id="result_job"></div>
-                <div class="row" id="result_user"></div>
-            </div>
+        <div class="bg-imgage mt-4">
+            <div class="row" id="result_job"></div>
+            <div class="row" id="result_user"></div>
         </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -377,7 +370,7 @@
                 xhttp.onload = function () {
                     var workers = JSON.parse(this.responseText).data
                     if (workers.length != 0) {
-                        var avatar = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
+                        var avatar = "https://byggjobs.app/typo3temp/assets/_processed_/8/7/csm_dummy-image_fc4b260568.png";
                         workers.forEach((element, index) => {
                             document.getElementById('result_user').innerHTML += `<a href="${element.shareUrl}" class="slide_user" target="_blank" rel="noreferrer">
                                 <div class="info-wrapper">
@@ -389,7 +382,7 @@
                                             <div class="name-title">
                                                 ${element.name}
                                             </div>
-                                            <div class="position-experience">
+                                            <div class="position-experience m-1">
                                                 <span>${element.experiencesInDays ? getFormatedStringFromDays(element.experiencesInDays) : ''}</span>
                                             </div>
                                             <div class="location">
@@ -528,9 +521,9 @@
             var months = Math.floor(numberOfDays % 365 / 30);
             var days = Math.floor(numberOfDays % 365 % 30);
             if (numberOfDays >= 365) {
-                return '|' + years + '+ yr'
+                return '| ' + years + '+ yr'
             } else if (numberOfDays < 365 && numberOfDays <= 30) {
-                return '|' + months + ' months'
+                return '| ' + months + ' months'
             }
         }
     </script>
