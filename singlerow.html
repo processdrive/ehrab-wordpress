@@ -118,6 +118,7 @@
             padding: 18px 18px 13px;
             margin-bottom: 10px;
             position: relative;
+            color: black !important;
         }
 
         .info-wrapper .top {
@@ -301,76 +302,9 @@
             return `${month[new Date(date).getMonth()]} ${date.split('-')[0]}`
 
         }
-        // setInterval(function(){
-        //     $(".slide_job").removeClass('fade_in')
-        //     $(".slide_job").addClass('fade_out')
-
-        //     setTimeout(function(){
-        //         $(".slide_job").addClass('fade_in')
-        //         $(".slide_job").removeClass('fade_out')
-        //         carouselJob()
-        //     }, 3000)  
-        // }, 10000) 
-
-
+        
         //User Script
         var myIndex_user = 0;
-        // function loadUser() {
-        //     try {
-        //         const xhttp = new XMLHttpRequest();
-        //         xhttp.onload = function () {
-        //             var workers = JSON.parse(this.responseText).data
-        //             if (workers.length != 0) {
-        //                 var avatar = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
-        //                 workers.forEach((element, index) => {
-        //                     document.getElementById('result_user').innerHTML += `<div class="col-12 p-1 slide_user">
-        //                 <a href="${element.shareUrl}" target="_blank" rel="noreferrer" >
-        //                     <div class="card card-widget bg-white h-100">
-        //                         <div class="row g-0">
-        //                             <div class="col-md-4 text-center mt-4">
-        //                                 <img src="${element.file ? element.file.url : (element.backgroundImage ? element.backgroundImage : avatar)}"
-        //                                     class="img-fluid bg-img rounded" alt="user image" width="60" height="75">
-        //                             </div>
-        //                             <div class="col-md-8">
-        //                                 <div class="card-body">
-        //                                     <h5 class="card-title">${element.name}</h5>
-        //                                     <h6 class="card-text"><small class="text-muted">${element.experiencesInDays ? getFormatedStringFromDays(element.experiencesInDays) : ''}</small></h6>
-        //                                     <h6 class="card-text"><small class="text-muted">${element.location.country ? element.location.country.name : ''} ${element.location.country && element.location.city ? ',' : ''} ${element.location.city ? element.location.city.name : ''}</small></h6>
-        //                                 </div>
-        //                             </div>
-        //                         </div>
-        //                         <div class="card-footer bg-white mt-3">
-        //                             <div class="float-left">
-        //                                 <img src="https://byggjobs.app/typo3conf/ext/byggjobs_api/Resources/Public/Icons/verified-icon.svg" alt="verified image"> ${element.verified ? 'Verified' : 'Not verified'}
-        //                             </div>
-        //                             <div class="float-right">
-        //                                 <span class="fa fa-star checked"></span>
-        //                                 ${element.ratings.averageRating}
-        //                             </div>
-        //                         </div>
-        //                     </div>
-        //                 </a>
-        //             </div>`;
-        //                 });
-        //                 document.getElementById('result_user').innerHTML += `<div class="d-flex justify-content-center" id="user_seemore">
-        //                 <a href="#" class="btn text-white bg-dark rounded-pill display-none" onclick="seeMore('user')" id="see_user">See More</href>
-        //                     </div>`
-        //                 // carouselUser()
-
-        //             }
-        //             else {
-        //                 document.getElementsByClassName("bg-imgage")[0].style.visibility = "hidden";
-        //             }
-
-        //         }
-        //         // xhttp.open("GET", "https://api.byggjobb.epicss.dev/api/typo3/users", true);//Staging
-        //         xhttp.open("GET", "https://services.byggjobb.app/api/typo3/users", true);//Live
-        //         xhttp.send();
-        //     } catch (error) {
-
-        //     }
-        // }
-
         function loadUser() {
             try {
                 const xhttp = new XMLHttpRequest();
@@ -477,16 +411,6 @@
 
             }
         }
-
-        // setInterval(function(){
-        //     $(".slide_user").removeClass('fade_in')
-        //     $(".slide_user").addClass('fade_out')
-
-        //     setTimeout(() => {
-        //         carouselUser()
-        //     }, 3000)
-        // }, 10000)
-
 
         var isPause = true
         setInterval(() => {
